@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+</head>
+<body>
+    <div class="notifications"></div>
+    <script>
+        let ws = new WebSocket('ws://localhost:8000/ws/j8559566getgdj89p/')
+        let notifications = document.querySelector('.notifications')
+
+        ws.onmessage = function(event) { 
+            console.log(event.data)
+            
+            const data = JSON.parse(event.data)
+            console.log("je verifi data ", data)
+            notifications.insertAdjacentHTML('beforebegin', `<h2>${data}</h2>`)
+            ws.send(JSON.stringify({'receved': true}))
+        };
+    </script>
+</body>
+</html>
