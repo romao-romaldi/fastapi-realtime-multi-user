@@ -7,7 +7,52 @@
 </head>
 <body>
     <div class="notifications"></div>
+
+    <div>
+        <form method="post" enctype="multipart/form-data"  >
+            <input type="file" name="file" id="" />
+            <input type="text" name="description" />
+            <input type="submit" value="save">
+        </form>
+    </div>
     <script>
+
+        const form = document.querySelector("form")
+        const url = "/create-post"
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault()
+            console.log("je suis form", form.elements[0].name);
+
+            const formdata = new FormData()
+
+            if (form.elements[0].value) {
+                formdata.append(form.elements[0].name, form.elements[0].value)
+            }
+
+            formdata.append(form.elements[1].name, form.elements[1].value)
+
+            async function upload(donneesFormulaires) {
+                try {
+                    const reponse = await fetch(url, {
+                    method: "Post",
+                    body: donneesFormulaires,
+                    });
+                    const resultat = await reponse.json();
+                    console.log("Réussite :", resultat);
+                } catch (erreur) {
+                    console.error("Erreur :", erreur);
+                    }
+                }
+            
+            upload(formdata)
+            
+        })
+        
+
+
+
+
         let ws = new WebSocket('ws://localhost:8000/ws/j8559566getgdj89p/')
         let notifications = document.querySelector('.notifications')
 

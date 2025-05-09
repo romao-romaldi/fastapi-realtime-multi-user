@@ -1,7 +1,8 @@
-from fastapi import FastAPI, Query, BackgroundTasks
+from fastapi import (FastAPI, Query, BackgroundTasks, File, Form, UploadFile
+                     ) 
 from fastapi.websockets import WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
-from typing import Optional, Dict
+from typing import Optional, Dict, Annotated
 import json
 from pprint import pprint
 from fastapi.concurrency import run_in_threadpool
@@ -95,6 +96,15 @@ async def mysoc(websocket:WebSocket, user_id:str ):
             print(data)
     except WebSocketDisconnect:
         manager.disconnect(websocket)
+
+
+@app.post("/create-post")
+def create_post(file: Annotated[UploadFile | None, File()] = None, 
+                description: Annotated[str, Form()] = "je test"):
+    print(description)
+    print(file)
+
+    return True
 
 
 if __name__ == "__main__":
